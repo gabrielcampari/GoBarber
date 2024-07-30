@@ -1,4 +1,6 @@
 import { DataSource } from 'typeorm';
+import Appointment from '../models/Appointment';
+
 
 const AppDataSource = new DataSource({
   type: 'postgres',
@@ -6,15 +8,13 @@ const AppDataSource = new DataSource({
   port: 5432,
   username: 'postgres',
   password: 'docker',
-  database: 'gobarber',
+  database: 'gostack_gobarber',
   synchronize: false,
   logging: false,
   entities: ['src/models/*.ts'],
   migrations: ['src/database/migrations/*.ts'],
-  cli: {
-    migrationsDir: 'src/database/migrations',
-  },
-} as any
+  cli: {migrationsDir: 'src/database/migrations',},
+  } as any
 );
 
 AppDataSource.initialize()

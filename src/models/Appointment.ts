@@ -1,17 +1,16 @@
-const { v4: uuidv4, validate: isUuid } = require('uuid');
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity('appointments')
 class Appointment { 
+  @PrimaryGeneratedColumn('uuid')
   id: String;
 
+  @Column()
   provider: String;
 
+  @Column('time with time zone')
   date: Date; 
 
-  constructor({provider, date}: Omit<Appointment, 'id'>){
-    this.id = uuidv4();
-    this.provider = provider; 
-    this.date = date; 
-  }
 }
 
 export default Appointment; 

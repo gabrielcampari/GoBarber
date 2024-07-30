@@ -1,32 +1,30 @@
-import { startOfHour } from 'date-fns'; 
-import Appointment from "../models/Appointment";
-import AppointmentsRepository from "../repositories/AppointmentsRepository";
+import { startOfHour } from 'date-fns';
+import Appointment from '../models/Appointment';
+import AppointmentsRepository from '../repositories/AppointmentsRepository';
+import AppDataSource from '../database/index';
 
 interface Request {
-
-  provider: String;
+  provider: string;
   date: Date;
 }
 
-class CreateAppointmentService{
+class CreateAppointmentService {
+  public async execute({ date, provider }: Request): Promise<Appointment> {
+    const appointmentsRepository = new AppointmentsRepository(AppDataSource);
 
-  private appointmentsRepository: AppointmentsRepository; 
-  constructor(appointmentsRepository: AppointmentsRepository){
-    this.appointmentsRepository = appointmentsRepository; 
-  } 
-
-  public execute({date, provider}: Request): Appointment {
     const appointmentDate = startOfHour(date);
-    const findAppointmentInSameDate = this.appointmentsRepository.findByDate(appointmentDate); 
+    const findAppointmentInSameDate = await appointmentsRepository.findByDate(appointmentDate);
 
-    if(findAppointmentInSameDate){
-      throw Error('This appointment is already booked!');
+    if (findAppointmentInSameDate) {
+      throw new Error('This appointment is already booked!');
     }
 
-    const appointment = this.appointmentsRepository.create({provider, date: appointmentDate});
+    const appointment = appointmentsRepository.create({ provider, date: appointmentDate });
 
-    return appointment; 
+    await appointmentsRepository.save(appointment);
+
+    return appointment;
   }
 }
 
-export default CreateAppointmentService; 
+export default CreateAppointmentService;
