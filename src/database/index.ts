@@ -1,21 +1,7 @@
 import { DataSource } from 'typeorm';
-import Appointment from '../models/Appointment';
+import config from '../config/ormconfig';  // ajuste o caminho conforme necessário
 
-
-const AppDataSource = new DataSource({
-  type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'postgres',
-  password: 'docker',
-  database: 'gostack_gobarber',
-  synchronize: false,
-  logging: false,
-  entities: ['src/models/*.ts'],
-  migrations: ['src/database/migrations/*.ts'],
-  cli: {migrationsDir: 'src/database/migrations',},
-  } as any
-);
+const AppDataSource = new DataSource(config);
 
 AppDataSource.initialize()
   .then(() => {
