@@ -6,15 +6,14 @@ const AppDataSource = new DataSource({
   port: 5432,
   username: 'postgres',
   password: 'docker',
-  database: 'gobarber',
+  database: 'gostack_gobarber',
   synchronize: false,
   logging: false,
-  entities: ['src/models/*.ts'],
-  migrations: ['src/database/migrations/*.ts'],
+  entities: ['src/models/*.ts'], // Ajuste o caminho para apontar corretamente para o diretório das entidades
+  migrations: ['src/database/migrations/*.ts'], // Ajuste o caminho para apontar corretamente para o diretório das migrações
   cli: {
-    migrationsDir: 'src/database/migrations',
-  },
-} as any
+    migrationsDir: 'src/database/migrations', // Ajuste o caminho para apontar corretamente para o diretório das migrações
+  }} as any, 
 );
 
 AppDataSource.initialize()

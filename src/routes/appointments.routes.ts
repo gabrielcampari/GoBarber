@@ -1,26 +1,25 @@
 import { Router } from 'express';
 import { parseISO } from 'date-fns';
-import Appointment from '../models/Appointment';
+import AppDataSource from '../database/index';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
 import CreateAppointmentService from '../services/CreateAppointmentService';
 
 const appointmentsRouter = Router();
-const appointmentsRepository = new AppointmentsRepository
 
-//Rotas HTTP:
-
-appointmentsRouter.get('/', (request, response) => {
-  const appointments = appointmentsRepository.all();//appointmentsRepository.all() responsável por captar todos os appointments e enviar para o método get
-  return response.json(appointments)
+// Rotas HTTP:
+appointmentsRouter.get('/', async (request, response) => {
+  const appointmentsRepository = new AppointmentsRepository(AppDataSource);
+  const appointments = await appointmentsRepository.find(); // Garantir que seja uma chamada assíncrona
+  return response.json(appointments);
 });
 
-appointmentsRouter.post('/', (request, response) => {
-  try{
-    const { provider, date } = request.body; 
-    const parsedDate = parseISO(date); 
-    const CreateAppointment = new CreateAppointmentService(appointmentsRepository);
-    const appointment = CreateAppointment.execute({ date: parsedDate, provider}); 
-  
+appointmentsRouter.post('/', async (request, response) => {
+  try {
+    const { provider, date } = request.body;
+    const parsedDate = parseISO(date);
+    const createAppointment = new CreateAppointmentService();
+    const appointment = await createAppointment.execute({ date: parsedDate, provider });
+
     return response.json(appointment);
   } catch (err) {
     if (err instanceof Error) {
@@ -31,4 +30,4 @@ appointmentsRouter.post('/', (request, response) => {
   }
 });
 
-export default appointmentsRouter; 
+export default appointmentsRouter;
