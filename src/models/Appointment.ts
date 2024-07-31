@@ -16,7 +16,6 @@ class Appointment {
 
   @UpdateDateColumn()
   update_at: Date; 
-
 }
 
 export default Appointment; 
