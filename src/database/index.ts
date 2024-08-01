@@ -9,11 +9,11 @@ const AppDataSource = new DataSource({
   database: 'gostack_gobarber',
   synchronize: false,
   logging: false,
-  entities: ['src/models/*.ts'], // Ajuste o caminho para apontar corretamente para o diretório das entidades
-  migrations: ['src/database/migrations/*.ts'], // Ajuste o caminho para apontar corretamente para o diretório das migrações
+  entities: ['src/models/*.ts'], 
+  migrations: ['src/database/migrations/*.ts'], 
   cli: {
-    migrationsDir: 'src/database/migrations', // Ajuste o caminho para apontar corretamente para o diretório das migrações
-  }} as any, 
+    migrationsDir: 'src/database/migrations',
+  },} as any, 
 );
 
 AppDataSource.initialize()
