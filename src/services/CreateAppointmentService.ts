@@ -2,14 +2,15 @@ import { startOfHour } from 'date-fns';
 import Appointment from '../models/Appointment';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
 import AppDataSource from '../database/index';
+import User from '../models/User';
 
 interface Request {
-  provider: string;
+  provider_id: String;
   date: Date;
 }
 
 class CreateAppointmentService {
-  public async execute({ date, provider }: Request): Promise<Appointment> {
+  public async execute({ date, provider_id }: Request): Promise<Appointment> {
     const appointmentsRepository = new AppointmentsRepository(AppDataSource);
 
     const appointmentDate = startOfHour(date);
@@ -19,7 +20,7 @@ class CreateAppointmentService {
       throw new Error('This appointment is already booked!');
     }
 
-    const appointment = appointmentsRepository.create({ provider, date: appointmentDate });
+    const appointment = appointmentsRepository.create({ provider_id, date: appointmentDate });
 
     await appointmentsRepository.save(appointment);
 
